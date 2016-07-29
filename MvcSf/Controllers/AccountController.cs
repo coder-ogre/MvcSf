@@ -15,6 +15,8 @@ namespace MvcSf.Controllers
     [Authorize]
     public class AccountController : Controller
     {
+        int someChangee = 1;
+        someChange = someChange + 1;
         private sfdb db = new sfdb(); //added
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
