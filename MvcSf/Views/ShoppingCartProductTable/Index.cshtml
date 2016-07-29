@@ -1,0 +1,181 @@
+﻿@model IEnumerable<MvcSf.Models.ShoppingCartProductTable>
+@using Newtonsoft.Json;
+@{
+    ViewBag.Title = "Your Cart";
+    Layout = "~/Views/CustomerShared/_CustomerLayout.cshtml";
+}
+
+<script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+@*<script src="@Url.Content("~/Scripts/jquery-1.10.2.js")" type="text/javascript"></script>*@
+
+<p>
+    <button type="button" id="emptyTheCartButton">Empty Cart</button>
+    <script>
+        $('#emptyTheCartButton').click(function() {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("EmptyTheCart", "ShoppingCartProductTable")',
+                success: function () {
+                    for(var j = -1; j < @Model.Count(); j++)
+                    {
+                        $('#shoppingCartProductViewRowID-'+j).html("");
+                    }
+                    $.ajax({
+                        type: 'GET',
+                        url: '@Url.Action("updateCartNavPartial", "ProductTable")',
+                        success:function(partialView) {
+                            $('#partialLoginContainer').html(partialView);
+                        }
+                    })
+                    $('#shoppingCartTotalPrice').html("Total Price: $0.00");
+
+                },
+                error: function() {
+                    console.log("Something bad happened");
+                }
+            })
+        })
+
+    </script>
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Quantity)
+        </th>
+        <th>
+            <strong>Update Quantity</strong>
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreatedBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateModified)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ModifiedBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ImageFile)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProductTable.ProductName)
+        </th>
+        @* <th>
+                @Html.DisplayNameFor(model => model.ShoppingCartTable.CreatedBy)
+            </th>*@
+        <th>
+            <strong>Take Action</strong>
+        </th>
+    </tr>
+
+    @{int itemCounter = -1;
+        int itemTypeAmount = Model.Count();
+    }
+    @foreach (var item in Model)
+    {
+        itemCounter++;
+        <tr id="shoppingCartProductViewRowID-@itemCounter">
+
+            @Html.HiddenFor(modelItem => item.ProductID, new { @id = ("cartItemID-" + itemCounter + "") })
+
+            <td id="quantityID-@itemCounter">
+                @Html.TextBoxFor(modelItem => item.Quantity, new { @id = ("quantityInput-" + itemCounter + "") })
+            </td>
+            <td id="updateQuantityID">
+                <input id="updateQuantityButton-@itemCounter" type="button" value="Update zQuants" />
+
+                <script type="text/javascript">
+                    $(document).ready( function() {
+
+                        var quantInput;
+                        var cartItemID;
+                        var newTotalNumberOfItemsInCart;
+                        $(('#updateQuantityButton-'+(@itemCounter)+'')).click(function() {
+
+                            quantInput = ($('#quantityInput-' + (@itemCounter) ).val());
+                            cartItemID = ($('#cartItemID-' + (@itemCounter) + '').val());
+
+                            $.ajax({
+                                type: 'POST',
+                                data: { id: cartItemID, quantity: quantInput },
+                                dataType: 'json',
+                                url: '@Url.Action("UpdateQuantity", "ShoppingCartProductTable")',
+                                success: function (plumbus) {
+                                    @*$('#SeeCart').html("<a  style='color: #999999';>View Cart: " + plumbus[1] + "</a>");*@
+                                    $('#quantityInput-@itemCounter').val(plumbus[0]);
+                                    if(plumbus[0] == 0)
+                                    {
+                                        @*
+                                        $('#quantityID-'+(@itemCounter)+'').html("");
+                                        $('#updateQuantityID'+(@itemCounter)+'').html("");
+                                        $('#priceID'+(@itemCounter)+'').html("");
+                                        $('#createdByID'+(@itemCounter)+'').html("");
+                                        $('#dateModifiedID'+(@itemCounter)+'').html("");
+                                        $('#modifiedByID'+(@itemCounter)+'').html("");
+                                        $('#imageFileID'+(@itemCounter)+'').html("");
+                                        $('#productNameID'+(@itemCounter)+'').html("");
+                                        $('#createdByID'+(@itemCounter)+'').html("");
+                                        $('#takeActionID'+(@itemCounter)+'').html("");
+                                            *@
+                                        $('#shoppingCartProductViewRowID-'+(@itemCounter)+'').html("");
+                                    }
+                                    $('#shoppingCartTotalPrice').html("Total Price: " + plumbus[3]);
+                                    $('#priceID-'+(@itemCounter)).html(plumbus[2]);
+                                    @*$('#shoppingCartTotalPrice').html("Total Price: @(((decimal)plumbus[0]).ToString("C2"))");
+                                    $('#priceID-'+(@itemCounter)).html("Total Price: @(((decimal)plumbus[0]).ToString("C2"))");*@
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: '@Url.Action("updateCartNavPartial", "ProductTable")',
+                                        success:function(partialView) {
+                                            $('#partialLoginContainer').html(partialView);
+                                        }
+                                    })
+
+
+                                },
+                                error: function() {
+                                    $('#workingOrNot').html('EERRRRRROOOOOOOR');
+                                }
+                            });
+                        })
+
+                    })
+
+                </script>
+            </td>
+
+            <td id="priceID-@itemCounter">
+                $@(Html.DisplayFor(modelItem => item.Price))
+            </td>
+            <td id="createdByID-@itemCounter">
+                @Html.DisplayFor(modelItem => item.CreatedBy)
+            </td>
+            <td id="dateModifiedID-@itemCounter">
+                @Html.DisplayFor(modelItem => item.DateModified)
+            </td>
+            <td id="modifiedByID-@itemCounter">
+                @Html.DisplayFor(modelItem => item.ModifiedBy)
+            </td>
+            <td id="imageFileID-@itemCounter">
+                @Html.DisplayFor(modelItem => item.ImageFile)
+            </td>
+            <td id="productNameID-@itemCounter">
+                @Html.DisplayFor(modelItem => item.ProductTable.ProductName)
+            </td>
+            @* <td id="">
+                    @Html.DisplayFor(modelItem => item.ShoppingCartTable.CreatedBy)
+                </td>*@
+            <td id="takeActionID-@itemCounter">
+                @Html.ActionLink("Details", "Details", new { id = item.ShoppingCartProductID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ShoppingCartProductID })
+            </td>
+        </tr>
+    }
+</table>
+
+<div id="shoppingCartTotalPrice">Total Price: @(((decimal)ViewBag.TotalPrice).ToString("C2"))</div>
+@Html.ActionLink("Check out", "ChooseAddress", "PlaceOrder")

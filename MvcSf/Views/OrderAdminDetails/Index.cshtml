@@ -1,0 +1,273 @@
+﻿@model MvcSf.Models.OrderTable
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@*<script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+<div id="superdupertest92">ummm</div>
+<style type="text/css">
+body {
+   /*background: #999;*/  
+   padding: 20px 40px; 
+}
+
+.tabs {
+  position: relative;   
+  min-height: 200px; /* This part sucks */
+  clear: both;
+  margin: 35px 0 25px;
+  background: white;
+}
+.tab {
+  float: left;
+   
+}
+.tab label {
+  background: #eee; 
+  padding: 10px; 
+  border: 1px solid #ccc; 
+  margin-left: -1px; 
+  position: relative;
+  left: 1px; 
+  top: -29px;
+  -webkit-transition: background-color .17s linear;
+}
+.tab [type=radio] {
+  display: none;   
+}
+.content {
+  position: absolute;
+  top: -1px;
+  left: 0;
+  background: white;
+  right: 0;
+  bottom: 0;
+  padding: 20px;
+  border: 1px solid #ccc; 
+  -webkit-transition: opacity .6s linear;
+  opacity: 0;
+}
+[type=radio]:checked ~ label {
+  background: white;
+  border-bottom: 1px solid white;
+  z-index: 2;
+}
+[type=radio]:checked ~ label ~ .content {
+  z-index: 1;
+  opacity: 1;
+}
+</style>
+
+<div class="tabs">
+
+    <div class="tab">
+        <input type="radio" id="tab-1" name="tab-group-1" checked>
+        <label for="tab-1">General</label>
+
+        <div class="content" id="OrderAdminDetailsTab1">
+            <p>Stuff for Tab One</p>
+            
+        </div>
+        
+    </div>
+
+    <div class="tab">
+        <input type="radio" id="tab-2" name="tab-group-1">
+        <label for="tab-2">Address</label>
+
+        <div class="content">
+            <p>Stuff for Tab Two</p>
+
+            <img src="http://placekitten.com/200/100">
+        </div>
+    </div>
+
+    <div class="tab">
+        <input type="radio" id="tab-3" name="tab-group-1">
+        <label for="tab-3">Products</label>
+
+        <div class="content">
+            <p>Stuff for Tab Three</p>
+
+            <img src="http://placedog.com/200/100">
+        </div>
+    </div>
+
+</div>*@
+
+@*<script type="text/javascript">
+    $(document).ready(function () {
+        $('#superdupertest92').html("hi");
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("getOrderProducts", "OrderAdminDetails")',
+            success: function (partialView) {
+                $('#superdupertest92').html('success');
+                $('#OrderAdminDetailsTab1').html(partialView);
+            },
+            error: function() {
+                $('#superdupertest92').html('error');
+            }
+        })
+    })
+</script>*@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus</p>
+
+<div class="tabs">
+
+    <div class="tab">
+        <input type="radio" id="tab-4" name="tab-group-2" checked>
+        <label for="tab-4">Tab One</label>
+
+        <div class="content">
+            <p>Stuff for Tab One</p>
+        </div>
+    </div>
+
+    <div class="tab">
+        <input type="radio" id="tab-5" name="tab-group-2">
+        <label for="tab-5">Tab Two</label>
+
+        <div class="content">
+            <p>Stuff for Tab Two</p>
+
+            <img src="http://placebear.com/200/100">
+        </div>
+    </div>
+
+    <div class="tab">
+        <input type="radio" id="tab-6" name="tab-group-2">
+        <label for="tab-6">Tab Three</label>
+
+        <div class="content">
+            You made it this far?!
+        </div>
+    </div>
+
+</div>*@
+
+
+
+@*
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.OrderDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Total)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateCreated)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreatedBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateModified)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ModifiedBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AddressTable.Address1)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StatusTable.StatusDescription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserTable.UserName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.OrderDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Total)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateCreated)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CreatedBy)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateModified)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ModifiedBy)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AddressTable.Address1)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.StatusTable.StatusDescription)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserTable.UserName)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.OrderID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.OrderID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.OrderID })
+        </td>
+    </tr>
+}
+
+</table>
+*@

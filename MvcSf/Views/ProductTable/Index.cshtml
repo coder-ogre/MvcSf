@@ -1,0 +1,148 @@
+﻿@model IEnumerable<MvcSf.Models.ProductTableViewModel>
+@using Newtonsoft.Json;
+@{
+    ViewBag.Title = "Search Available Products";
+    Layout = "~/Views/CustomerShared/_CustomerLayout.cshtml";
+}
+<script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+@using (Ajax.BeginForm(
+                                        new AjaxOptions
+                                        {
+                                            HttpMethod = "get",
+                                            InsertionMode = InsertionMode.Replace,
+                                            UpdateTargetId = "productSearchResultList"
+                                        }))
+{
+    <p style="text-align: center"><br />
+        <input type="search" name="searchTerm" style="padding-right: 95px; margin-right:20px" />
+        <input type="submit" value="search By Name" />
+        
+    </p>
+    
+}
+<div id="productSearchResultsDescription">it's not working</div>
+<br /><br />
+<script>
+    var modelCount = @Model.Count();
+    var resultsDescriptions = document.getElementById("productSearchResultsDescription");
+    if(modelCount == 0)
+    {
+        resultsDescriptions.innerHTML = "Your search returned no results.";
+    }
+    if(modelCount > 0)
+    {
+        resultsDescriptions.innerHTML = "Your search returned " + modelCount + " results.";
+    }
+    @*if(@Model.Count() == 0)
+    {
+        $('#productSearchResultsDescription').text('<p>    Your search returned no results.</p>');
+    }
+    else
+    {
+        $('#productSearchResultsDescription').text('<p>    Your search returned '+ @Model.Count() + ' results.</p>');
+    }*@
+
+</script>
+
+<div id="productSearchResultList">
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductImage)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                <strong>Amount Already In Cart</strong>
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.Quantity)*@
+                <strong>Amount Available</strong>
+            </th>
+            <th><text><b>Edit | Details | Delete</b></text></th>
+            <th><text><b>Add Item To Cart</b></text></th>
+        </tr>
+        @{
+            var productID = 0;
+        }
+        @foreach (var item in Model)
+        {
+            productID = item.ProductID;
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductImage)
+                </td>
+                <td>
+                    $@Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td id="amountInCart-@productID">
+                    @Html.DisplayFor(modelItem => item.AlreadyInCart@*, new { @id = ("amountInCart-" + itemCounter + "") }*@)
+                    @*@Html.DisplayFor(modelItem => item.AlreadyInCart, new { @id = ("amountInCart-" + itemCounter + "") })*@
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.ProductID }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.ProductID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ProductID })
+                </td>
+                <td>
+                    @*@@Html.ActionLink("Add Item To Cart", "AddToCart", "ShoppingCartProductTable", new { id = item.ProductID }, null);*@
+                    
+                    <input id="AddItemToCartButton-@productID" type="button" value="Add Item To Cart" onclick="addToCart(@productID)" />
+                        
+
+                    
+
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
+
+<script type="text/javascript">
+    function addToCart(itemNumber) {
+        console.log("You clicked the button");
+
+        $.ajax({
+            type: 'POST',
+            data: { id: itemNumber },
+            dataType: 'json',
+            url: '@Url.Action("AddToCart", "ShoppingCartProductTable")',
+            success: function (newAmount) {
+                $('#amountInCart-'+itemNumber).html(newAmount[0]);
+            @*$('#SeeCart').html("<a href='ShoppingCartProductTable/Index' style='color: #999999';>View Cart: " + newAmount[1] + "</a>");*@
+
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("updateCartNavPartial", "ProductTable")',
+                success:function(partialView) {
+                    $('#partialLoginContainer').html(partialView);
+                }
+            })
+
+
+
+            },
+            error: function() {
+                console.log("Something bad happened");
+            }
+        });
+
+    };
+   
+
+
+</script>

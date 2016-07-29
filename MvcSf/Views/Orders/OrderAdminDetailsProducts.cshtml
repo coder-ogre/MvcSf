@@ -1,0 +1,46 @@
+﻿@model IEnumerable<MvcSf.Models.OrderProductViewModel>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.OrderProductID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProductID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProductName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Quantity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Price)
+        </th>
+    </tr>
+    @for(int j = 0; j < Model.ToList().Count(); j++)
+    {
+        <tr>
+            <td>
+                @*@Html.HiddenFor(modelItem => item.OrderProductID)*@
+                @Model.ToList()[j].OrderProductID
+            </td>
+            <td>
+                @*@Html.TextBoxFor(modelItem => item.ProductID)*@
+                @Model.ToList()[j].ProductID
+            </td>
+            <td>
+                @*@(Html.DisplayFor(modelItem => item.ProductName))*@
+                @Model.ToList()[j].ProductName
+            </td>
+            <td>
+                @*@Html.DisplayFor(modelItem => item.Quantity)*@
+                @Model.ToList()[j].Quantity
+            </td>
+            <td>
+                @*@Html.DisplayFor(modelItem => item.Price)*@
+                @Model.ToList()[j].Price.ToString("C2")
+            </td>
+        </tr>
+    }
+</table>
